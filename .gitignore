@@ -1,0 +1,4 @@
+.vscode/
+out/
+.air.toml
+.env

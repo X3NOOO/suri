@@ -1,4 +1,7 @@
 .vscode/
 out/
+tmp/
 .air.toml
 .env
+cache.json
+rag.json

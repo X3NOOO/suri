@@ -1,8 +1,9 @@
 module github.com/X3NOOO/suri
 
-go 1.22.3
+go 1.22.5
 
 require (
+	github.com/X3NOOO/llamaparse-go v0.0.0-20240721114957-a7528bf91aaf
 	github.com/henomis/lingoose v0.2.0
 	github.com/joho/godotenv v1.5.1
 )

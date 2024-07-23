@@ -34,8 +34,8 @@ func main() {
 	_ = godotenv.Load(envFlag)
 	// log.Printf("Environ: %v\n", os.Environ())
 
-	port, ok := os.LookupEnv("SURI_PORT")
-	if !ok {
+	port := os.Getenv("SURI_PORT")
+	if port == "" {
 		port = defaultPort
 		log.Printf("SURI_PORT environment variable not found. Using default (%s)\n", defaultPort)
 	}
@@ -47,8 +47,8 @@ func main() {
 		"source":      "https://github.com/X3NOOO/suri",
 	}
 
-	historyCountdownStr, ok := os.LookupEnv("SURI_HISTORY_COUNTDOWN")
-	if !ok {
+	historyCountdownStr := os.Getenv("SURI_HISTORY_COUNTDOWN")
+	if historyCountdownStr == "" {
 		log.Printf("SURI_HISTORY_COUNTDOWN environment variable not found. Using default (%s)\n", defaultHistoryCountdown)
 		historyCountdownStr = defaultHistoryCountdown
 	}

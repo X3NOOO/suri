@@ -5,3 +5,4 @@ tmp/
 .env
 cache.json
 rag.json
+bruno/

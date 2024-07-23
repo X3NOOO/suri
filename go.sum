@@ -1,3 +1,5 @@
+github.com/X3NOOO/llamaparse-go v0.0.0-20240721114957-a7528bf91aaf h1:cjHusrcYY5f3Ssr2aPFa3WsscsXRpiV6gku8nz2jyn0=
+github.com/X3NOOO/llamaparse-go v0.0.0-20240721114957-a7528bf91aaf/go.mod h1:JK69W4U+wnt6pOkPUUin0X9ZBupuyBAs19Jg84AzYzQ=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=

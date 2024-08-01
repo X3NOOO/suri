@@ -6,3 +6,5 @@ tmp/
 cache.json
 rag.json
 bruno/
+dependencies/*
+!dependencies/fetch.sh

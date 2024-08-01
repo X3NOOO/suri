@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/X3NOOO/suri/internal/parser"
 	"github.com/henomis/lingoose/assistant"
 	openaiembedder "github.com/henomis/lingoose/embedder/openai"
 	"github.com/henomis/lingoose/index"
@@ -19,6 +20,7 @@ type SuriAI struct {
 	assistant assistant.Assistant
 	rag       *rag.RAG
 	history   history
+	parser    parser.Parser // We use a custom parser package instead of the lingoose's built-in one because it requires the file to be saved on disk
 }
 
 func New(historyCountdown time.Duration) *SuriAI {
@@ -103,5 +105,11 @@ func New(historyCountdown time.Duration) *SuriAI {
 			Countdown:     historyCountdown,
 			SystemMessage: systemMessage,
 		},
+		parser: parser.DefaultParser{},
 	}
+}
+
+func (a *SuriAI) WithParser(p parser.Parser) *SuriAI {
+	a.parser = p
+	return a
 }

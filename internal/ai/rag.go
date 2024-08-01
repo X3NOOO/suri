@@ -3,7 +3,6 @@ package ai
 import (
 	"context"
 
-	"github.com/X3NOOO/suri/internal/parser"
 	"github.com/henomis/lingoose/document"
 )
 
@@ -12,7 +11,7 @@ func (a *SuriAI) Learn(documents ...document.Document) error {
 }
 
 func (a *SuriAI) LearnFile(file []byte, mime string, metadata map[string]any) error {
-	content, err := parser.Parse(file, mime) // We use a custom parser package instead of the lingoose's built-in one because it requires the file to be saved on disk
+	content, err := a.parser.Parse(file, mime)
 	if err != nil {
 		return err
 	}

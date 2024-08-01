@@ -7,9 +7,15 @@ import (
 	"github.com/X3NOOO/llamaparse-go"
 )
 
+type Parser interface {
+	Parse(file []byte, mime string) (string, error)
+}
+
 var ErrUnsupportedMIME = errors.New("unsupported MIME type")
 
-func Parse(file []byte, mime string) (string, error) {
+type DefaultParser struct{}
+
+func (DefaultParser) Parse(file []byte, mime string) (string, error) {
 	switch mime {
 	case "text/plain":
 		return string(file), nil

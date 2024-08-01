@@ -11,11 +11,11 @@ import (
 	"github.com/henomis/lingoose/document"
 )
 
-func (ctx *RoutingContext) KnowladgeGET(w http.ResponseWriter, r *http.Request) {
+func (ctx *RoutingContext) KnowledgeGET(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Not Implemented", http.StatusNotImplemented)
 }
 
-func (ctx *RoutingContext) knowladgePOSTJSON(w http.ResponseWriter, r *http.Request) {
+func (ctx *RoutingContext) knowledgePOSTJSON(w http.ResponseWriter, r *http.Request) {
 	body_json, err := io.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -39,7 +39,7 @@ func (ctx *RoutingContext) knowladgePOSTJSON(w http.ResponseWriter, r *http.Requ
 	w.WriteHeader(http.StatusCreated)
 }
 
-func (ctx *RoutingContext) knowladgePOSTFile(w http.ResponseWriter, r *http.Request) {
+func (ctx *RoutingContext) knowledgePOSTFile(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(ctx.MaxMemory)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -99,27 +99,36 @@ func (ctx *RoutingContext) knowladgePOSTFile(w http.ResponseWriter, r *http.Requ
 	w.WriteHeader(http.StatusCreated)
 }
 
-func (ctx *RoutingContext) KnowladgePOST(w http.ResponseWriter, r *http.Request) {
+func (ctx *RoutingContext) KnowledgePOST(w http.ResponseWriter, r *http.Request) {
 	contentType := strings.Split(strings.ToLower(r.Header.Get("Content-Type")), ";")[0]
+	if contentType == "" {
+		buff := make([]byte, 512)
+		_, err := r.Body.Read(buff)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		contentType = http.DetectContentType(buff)
+	}
 
 	switch contentType {
 	case "application/json":
-		ctx.knowladgePOSTJSON(w, r)
+		ctx.knowledgePOSTJSON(w, r)
 	case "multipart/form-data":
-		ctx.knowladgePOSTFile(w, r)
+		ctx.knowledgePOSTFile(w, r)
 	default:
 		http.Error(w, "Unsupported Content-Type", http.StatusBadRequest)
 	}
 }
 
-func (ctx *RoutingContext) KnowladgeNameGET(w http.ResponseWriter, r *http.Request) {
+func (ctx *RoutingContext) KnowledgeNameGET(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Not Implemented", http.StatusNotImplemented)
 }
 
-func (ctx *RoutingContext) KnowladgeNamePUT(w http.ResponseWriter, r *http.Request) {
+func (ctx *RoutingContext) KnowledgeNamePUT(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Not Implemented", http.StatusNotImplemented)
 }
 
-func (ctx *RoutingContext) KnowladgeNameDELETE(w http.ResponseWriter, r *http.Request) {
+func (ctx *RoutingContext) KnowledgeNameDELETE(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Not Implemented", http.StatusNotImplemented)
 }

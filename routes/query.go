@@ -29,10 +29,12 @@ func (ctx *RoutingContext) queryParseResponse(w http.ResponseWriter, r *http.Req
 	}
 
 	if !muteServerAudio {
-		err = audio.Play()
-		if err != nil {
-			log.Println("Error while playing audio:", err)
-		}
+		go func() {
+			err = audio.Play()
+			if err != nil {
+				log.Println("Error while playing audio:", err)
+			}
+		}()
 	}
 
 	var raw_response []byte

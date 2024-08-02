@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/X3NOOO/suri/routes"
 	"github.com/ebitengine/oto/v3"
@@ -18,8 +19,8 @@ import (
 const PIPER_OUT_FORMAT = "s16le"
 
 var (
-	ErrMissingConfig = errors.New("missing required fields")
-	ErrNilAudio      = errors.New("the audio is nil")
+	ErrMissingConfig              = errors.New("missing required fields")
+	ErrNilAudio                   = errors.New("the audio is nil")
 )
 
 type piperModelConfig struct {
@@ -94,6 +95,8 @@ func (p PiperTTS) Generate(text string) (routes.Audio, error) {
 	}, nil
 }
 
+var otoCtx *oto.Context = nil
+
 func (a *PiperAudio) Play() error {
 	if a.audio == nil {
 		return ErrNilAudio
@@ -107,18 +110,25 @@ func (a *PiperAudio) Play() error {
 
 	log.Printf("Audio player config: %+v\n", *op)
 
-	otoCtx, readyChan, err := oto.NewContext(op)
-	if err != nil {
-		log.Println("Error creating new audio context:", err)
-		return err
+	if otoCtx == nil {
+		newOtoCtx, readyChan, err := oto.NewContext(op)
+		if err != nil {
+			log.Println("Error creating new audio context:", err)
+			return err
+		}
+		<-readyChan
+		otoCtx = newOtoCtx
 	}
-	<-readyChan
 
 	player := otoCtx.NewPlayer(bytes.NewReader(a.audio))
 
 	player.Play()
 
-	return nil
+	for player.IsPlaying() {
+		time.Sleep(100 * time.Millisecond)
+	}
+
+	return player.Close()
 }
 
 func (a *PiperAudio) Wav() ([]byte, error) {

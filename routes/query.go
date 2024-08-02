@@ -1,10 +1,13 @@
 package routes
 
 import (
+	"bufio"
+	"bytes"
 	"encoding/json"
 	"io"
 	"log"
 	"net/http"
+	"os/exec"
 	"strings"
 
 	"github.com/X3NOOO/suri/models"
@@ -137,11 +140,29 @@ func (ctx *RoutingContext) queryPOSTAudio(w http.ResponseWriter, r *http.Request
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
-	// FIXME: automatically convert the content type to one that's supported
+	ffmpegPath, err := exec.LookPath("ffmpeg")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	cmd := exec.Command(ffmpegPath, "-hide_banner", "-nostats", "-loglevel", "0", "-i", "pipe:0", "-f", "wav", "pipe:1")
+	log.Println("Running ffmpeg:", cmd.String())
+
+	cmd.Stdin = bytes.NewReader(fileContent)
+
+	wavFileContent := bytes.Buffer{}
+	cmd.Stdout = bufio.NewWriter(&wavFileContent)
+
+	err = cmd.Run()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	query, err := ctx.Whisper.Transcribe(whisper.Request{
 		File: whisper.File{
-			Data: fileContent,
+			Data: wavFileContent.Bytes(),
 			Name: "file.wav",
 		},
 		Model:          ctx.WhisperModel,

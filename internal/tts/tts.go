@@ -141,7 +141,7 @@ func (a *PiperAudio) Wav() ([]byte, error) {
 		return nil, err
 	}
 
-	cmd := exec.Command(ffmpegPath, "-f", PIPER_OUT_FORMAT, "-ar", strconv.Itoa(a.sampleRate), "-ac", strconv.Itoa(a.numSpeakers), "-i", "pipe:0", "-f", "wav", "pipe:1")
+	cmd := exec.Command(ffmpegPath, "-hide_banner", "-nostats", "-loglevel", "0", "-f", PIPER_OUT_FORMAT, "-ar", strconv.Itoa(a.sampleRate), "-ac", strconv.Itoa(a.numSpeakers), "-i", "pipe:0", "-f", "wav", "pipe:1")
 	log.Println("Running ffmpeg:", cmd.String())
 
 	cmd.Stdin = bytes.NewReader(a.audio)

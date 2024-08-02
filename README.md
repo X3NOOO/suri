@@ -19,7 +19,6 @@ Suri provides an (hopefully) easy-to-use API that allows for an easy implementat
 
 ### Todo
 
-- Auto ffmpeg to supported audio type
 - Authentication
 
 ### Credits

@@ -19,11 +19,6 @@ func (ctx *RoutingContext) queryParseResponse(w http.ResponseWriter, r *http.Req
 	noResponse := strings.ToLower(r.Header.Get("X-No-Response")) == "true"
 	muteServerAudio := strings.ToLower(r.Header.Get("X-Mute-Server-Audio")) == "true"
 
-	if noResponse {
-		log.Println("No-Response requested")
-		return
-	}
-
 	log.Println("LLM response:", response)
 
 	audio, err := ctx.TTS.Generate(response)
@@ -38,6 +33,11 @@ func (ctx *RoutingContext) queryParseResponse(w http.ResponseWriter, r *http.Req
 				log.Println("Error while playing audio:", err)
 			}
 		}()
+	}
+
+	if noResponse {
+		log.Println("No-Response requested")
+		return
 	}
 
 	var raw_response []byte

@@ -19,8 +19,8 @@ import (
 const PIPER_OUT_FORMAT = "s16le"
 
 var (
-	ErrMissingConfig              = errors.New("missing required fields")
-	ErrNilAudio                   = errors.New("the audio is nil")
+	ErrMissingConfig = errors.New("missing required fields")
+	ErrNilAudio      = errors.New("the audio is nil")
 )
 
 type piperModelConfig struct {

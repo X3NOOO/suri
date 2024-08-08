@@ -11,7 +11,6 @@ import (
 	openaiembedder "github.com/henomis/lingoose/embedder/openai"
 	"github.com/henomis/lingoose/index"
 	"github.com/henomis/lingoose/index/vectordb/jsondb"
-	"github.com/henomis/lingoose/llm/cache"
 	"github.com/henomis/lingoose/llm/openai"
 	"github.com/henomis/lingoose/rag"
 )
@@ -97,10 +96,8 @@ func New(historyCountdown time.Duration) *SuriAI {
 	localRag := rag.New(index.New(jsondb.New().WithPersist(ragPath), openaiembedder.New(embeddingModel))).WithChunkSize(uint(chunkSize)).WithChunkOverlap(uint(chunkOverlap))
 
 	return &SuriAI{
-		assistant: *assistant.New(openai.New().WithTemperature(float32(temperature)).WithModel(model).WithCache(
-			cache.New(index.New(jsondb.New().WithPersist(cachePath), openaiembedder.New(embeddingModel))),
-		)).WithRAG(localRag),
-		rag: localRag,
+		assistant: *assistant.New(openai.New().WithTemperature(float32(temperature)).WithModel(model)).WithRAG(localRag),
+		rag:       localRag,
 		history: history{
 			Countdown:     historyCountdown,
 			SystemMessage: systemMessage,

@@ -1,4 +1,10 @@
 .vscode/
 out/
+tmp/
 .air.toml
 .env
+cache.json
+rag.json
+bruno/
+dependencies/*
+!dependencies/fetch.sh
